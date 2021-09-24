@@ -1,0 +1,37 @@
+--- # install java ,download tomcat and install tomcat
+- hosts: webservers
+  user: ansible
+  become: yes
+  connection: ssh
+  tasks:
+          - name: install java s/w on redhat
+            yum:
+                    name: java
+                    state: present
+            when: ansible_os_family == "RedHat"
+          
+          - name: install java s/w on"Debian
+            apt:
+                    name: java
+                    state: present
+            when: ansible_os_family == "Debian"
+         
+          - name: downloading tomcat webserver     
+            get_url:
+                    url: https://dlcdn.apache.org/tomcat/tomcat-8/v8.5.71/bin/apache-tomcat-8.5.71.tar.gz                   
+                    dest: /opt/apache-tomcat-8.5.71.tar.gz
+         
+          - name: extract this file apache-tomcat-8.5.71.tar.gz
+            unarchive:
+                    src: /opt/apache-tomcat-8.5.71.tar.gz
+                    dest: /opt
+                    remote_src: yes #it's verify whether tar.gz removed or not
+          - name: giving execute permissions #giving permissions for execute shell script file.
+            file:
+                    path: /opt/apache-tomcat-8.5.71/bin/startup.sh #this is shell file
+                    mode: 0777
+          - name: start apache tomcat service
+            shell: nohup ./startup.sh #nohup means tomcat service runs continuously
+            args:
+                    chdir: /opt/apache-tomcat-8.5.71/bin # this is the path of ./startup.sh file
+

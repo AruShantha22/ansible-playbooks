@@ -1,0 +1,15 @@
+--- # this is files and folders playbook
+- hosts: webservers
+  user: ansible
+  become: yes
+  connection: ssh
+  tasks:
+          - name: creating file
+            file: path=/tmp/sai.txt state=touch
+
+          - name: creating folder
+            file: path=/tmp/rajdir state=directory
+
+
+          - name: copying a file
+            copy: src=./jumfile dest=/home/ansible 

@@ -1,0 +1,39 @@
+--- # install java ,download jenkins and install jenkins.
+- hosts: all
+  user: ansible
+  become: yes
+  connection: ssh
+  tasks:
+          - name: install java s/w
+            yum:
+                    name: java
+                    state: installed
+          - name: install wget 
+
+            yum:
+                    name: wget
+                    state: present
+          - name: download jenkins
+          
+            get_url:
+                    url: https://pkg.jenkins.io/redhat-stable/jenkins.repo
+                    dest: /etc/yum.repos.d/jenkins.repo
+          - name: downloading the key
+            rpm_key:
+                    state: present
+                    key: https://pkg.jenkins.io/redhat-stable/jenkins.io.key #key for download jenkins
+           
+          - name: installing jenkins
+            yum:
+                    name: jenkins
+                    state: present
+          - name: start jenkins
+            service:
+                    name: jenkins
+                    state: started
+                    enabled: yes #means if i stop instace jenkins service is always running
+
+                       
+                    
+                            
+

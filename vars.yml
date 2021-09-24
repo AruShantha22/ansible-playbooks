@@ -1,0 +1,12 @@
+--- # this is variable playbook
+- hosts: all
+  user: ansible
+  become: yes
+  connection: ssh
+  vars:
+          pkg: httpd
+ 
+ 
+  tasks:
+          - name: installing httpd in webservers
+            action: yum name='{{pkg}}'  state=installed      
